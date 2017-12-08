@@ -6,7 +6,7 @@ import "strings"
 // sep is used as the delimiter in the data of s.  If it is possible that the data could
 // contain the sep character within quotes, etc., then provide the text identifier, aka qualifier,
 // to qual.  If there is not expected qualifier, then use "".
-func FieldLen(s, sep, qual string) int {
+func length(s, sep, qual string) int {
 	i := 0
 	if qual == "" || !strings.HasPrefix(s, qual) {
 		i = strings.Index(s, sep)
@@ -34,10 +34,33 @@ func SplitWithQual(s, sep, qual string) []string {
 	var words = make([]string, 0, strings.Count(s, sep))
 
 	for start := 0; start < len(s); {
-		count := FieldLen(s[start:], sep, qual)
+		count := length(s[start:], sep, qual)
 		words = append(words, s[start:start+count])
 		start += count + len(sep)
 	}
 
 	return words
+}
+
+// FieldLengths returns a map that contains a key representing the column position
+// and a value which represents the count for the respective column.
+// The counts are based on fields delimited by sep.  If s contains a character
+// that matches sep in the data itself, provide that character for qual
+// so that it can be properly escaped.  Otherwise provide and empty string for qual.
+func FieldLengths(s, sep, qual string) map[int]int {
+	var columnNum int
+	var temp int
+	var counts = make(map[int]int)
+
+	for start := 0; start < len(s); {
+		temp = length(s[start:], sep, qual)
+		start += temp + len(sep)
+		if temp > counts[columnNum] {
+			counts[columnNum] = temp
+		}
+		columnNum++
+		temp = 0
+	}
+
+	return counts
 }
