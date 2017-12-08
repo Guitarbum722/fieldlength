@@ -1,4 +1,4 @@
-package fieldlength
+package qualified
 
 import "strings"
 
@@ -24,4 +24,20 @@ func FieldLen(s, sep, qual string) int {
 	}
 
 	return len(s[:i])
+}
+
+// SplitWithQual basically works like the standard strings.Split() func, but will consider a text qualifier if set.
+func SplitWithQual(s, sep, qual string) []string {
+	if qual == "" {
+		return strings.Split(s, sep) // use standard Split() method if no qualifier is considered
+	}
+	var words = make([]string, 0, strings.Count(s, sep))
+
+	for start := 0; start < len(s); {
+		count := FieldLen(s[start:], sep, qual)
+		words = append(words, s[start:start+count])
+		start += count + len(sep)
+	}
+
+	return words
 }
