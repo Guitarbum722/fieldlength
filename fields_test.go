@@ -62,6 +62,12 @@ var fieldLenCases = []struct {
 		"",
 		map[int]int{1: 3, 2: 5, 3: 4, 0: 3},
 	},
+	{
+		"zero,\"onetwothreefour",
+		",",
+		"\"",
+		map[int]int{0: 4, 1: 16},
+	},
 }
 
 func TestSplitWithQual(t *testing.T) {
