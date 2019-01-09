@@ -7,14 +7,13 @@ func SplitWithQual(s, sep, qual string) []string {
 	if qual == "" {
 		return strings.Split(s, sep) // use standard Split() method if no qualifier is considered
 	}
-	var words = make([]string, 0, strings.Count(s, sep))
+	words := make([]string, 0, strings.Count(s, sep))
 
 	for start := 0; start < len(s); {
 		count := length(s[start:], sep, qual)
 		words = append(words, s[start:start+count])
 		start += count + len(sep)
 	}
-
 	return words
 }
 
@@ -26,7 +25,8 @@ func SplitWithQual(s, sep, qual string) []string {
 func FieldLengths(s, sep, qual string) map[int]int {
 	var columnNum int
 	var temp int
-	var counts = make(map[int]int)
+	// count per field
+	counts := make(map[int]int)
 
 	for start := 0; start < len(s); {
 		temp = length(s[start:], sep, qual)
@@ -37,7 +37,6 @@ func FieldLengths(s, sep, qual string) map[int]int {
 		columnNum++
 		temp = 0
 	}
-
 	return counts
 }
 
@@ -57,10 +56,8 @@ func length(s, sep, qual string) int {
 		}
 		return len(s[:i+len(qual)])
 	}
-
 	if i == -1 {
 		return len(s)
 	}
-
 	return len(s[:i])
 }
