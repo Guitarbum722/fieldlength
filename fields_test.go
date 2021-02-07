@@ -32,6 +32,12 @@ var splitCases = []struct {
 		"",
 		4,
 	},
+	{
+		"one|\", two\"|three|four",
+		"|",
+		"",
+		4,
+	},
 }
 
 var fieldLenCases = []struct {
@@ -63,10 +69,16 @@ var fieldLenCases = []struct {
 		map[int]int{1: 3, 2: 5, 3: 4, 0: 3},
 	},
 	{
-		"zero,\"onetwothreefour",
+		"zero,\"onetwothreefour\"",
 		",",
 		"\"",
-		map[int]int{0: 4, 1: 16},
+		map[int]int{0: 4, 1: 17},
+	},
+	{
+		"zero,\", onetwothreefour\"",
+		",",
+		"\"",
+		map[int]int{0: 4, 1: 19},
 	},
 }
 
